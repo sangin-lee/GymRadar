@@ -32,6 +32,12 @@ public class AddTrainingCenterActivity extends AppCompatActivity implements MapV
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mapViewContainer.removeView(mapView);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mapViewContainer.removeAllViews();
@@ -98,7 +104,6 @@ public class AddTrainingCenterActivity extends AppCompatActivity implements MapV
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_cancel:
-                mapViewContainer.removeView(mapView);
                 startActivity(new Intent(AddTrainingCenterActivity.this, MainActivity.class));
         }
         return super.onOptionsItemSelected(item);

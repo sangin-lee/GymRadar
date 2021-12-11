@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapPoint;
@@ -22,9 +21,6 @@ public class InsertInfoActivity extends AppCompatActivity implements MapReverseG
         Intent intent = getIntent();
         double latitude = intent.getExtras().getDouble("latitude");
         double longitude = intent.getExtras().getDouble("longitude");
-
-        ((TextView) findViewById(R.id.insert_latitude)).setText(Double.toString(latitude));
-        ((TextView) findViewById(R.id.insert_longitude)).setText(Double.toString(longitude));
 
         MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude);
         Log.d("latitude", Double.toString(mapPoint.getMapPointGeoCoord().latitude));
@@ -48,6 +44,6 @@ public class InsertInfoActivity extends AppCompatActivity implements MapReverseG
     }
 
     private void onFinishReverseGeoCoding(String result) {
-        ((TextView) findViewById(R.id.insert_address)).setText(result);
+        ((TextView) findViewById(R.id.input_address)).setText(result);
     }
 }

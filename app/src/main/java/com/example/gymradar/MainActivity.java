@@ -52,15 +52,107 @@ public class MainActivity extends AppCompatActivity implements MapView.MapViewEv
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mapViewContainer.removeView(mapView);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mapViewContainer.removeAllViews();
     }
 
-    private void onFinishReverseGeoCoding(String result) {
-//        Toast.makeText(LocationDemoActivity.this, "Reverse Geo-coding : " + result, Toast.LENGTH_SHORT).show();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
+    @Override
+    public void onMapViewInitialized(MapView mapView) {
+        mapView.setShowCurrentLocationMarker(true);
+    }
+
+    @Override
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+
+    }
+
+    @Override
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    // 액션바의 옵션 선택했을 때
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.tracking_mode:
+                // TODO: 트래킹 모드 설정
+                if(mapView.getCurrentLocationTrackingMode() != MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading) {
+                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+                    Toast.makeText(MainActivity.this, "Tracking mode on", Toast.LENGTH_SHORT).show();
+                    item.setIcon(R.drawable.gps_off);
+                }
+                else {
+                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+                    Toast.makeText(MainActivity.this, "Tracking mode off", Toast.LENGTH_SHORT).show();
+                    item.setIcon(R.drawable.gps_fixed);
+                }
+                break;
+
+            case R.id.menu_add_training_center:
+                // TODO: 트레이닝 센터 등록
+                startActivity(new Intent(MainActivity.this, AddTrainingCenterActivity.class));
+                break;
+
+            case R.id.menu_search:
+                // TODO: 검색
+                break;
+
+            case R.id.menu_recommend:
+                // TODO: 추천 받기
+                break;
+
+            case R.id.menu_review:
+                // TODO: 리뷰
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // GPS Permission 관련 함수들
     // ActivityCompat.requestPermissions를 사용한 퍼미션 요청의 결과를 리턴받는 메소드
     @Override
     public void onRequestPermissionsResult(int permsRequestCode,
@@ -174,94 +266,5 @@ public class MainActivity extends AppCompatActivity implements MapView.MapViewEv
 
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
-
-    @Override
-    public void onMapViewInitialized(MapView mapView) {
-        mapView.setShowCurrentLocationMarker(true);
-    }
-
-    @Override
-    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
-
-    }
-
-    @Override
-    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.tracking_mode:
-                // TODO: 트래킹 모드 설정
-                if(mapView.getCurrentLocationTrackingMode() != MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading) {
-                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-                    Toast.makeText(MainActivity.this, "Tracking mode on", Toast.LENGTH_SHORT).show();
-                    item.setIcon(R.drawable.gps_off);
-                }
-                else {
-                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-                    Toast.makeText(MainActivity.this, "Tracking mode off", Toast.LENGTH_SHORT).show();
-                    item.setIcon(R.drawable.gps_fixed);
-                }
-                break;
-
-            case R.id.menu_add_training_center:
-                // TODO: 트레이닝 센터 등록
-                mapViewContainer.removeView(mapView);
-                startActivity(new Intent(MainActivity.this, AddTrainingCenterActivity.class));
-                break;
-
-            case R.id.menu_search:
-                // TODO: 검색
-                break;
-
-            case R.id.menu_recommend:
-                // TODO: 추천 받기
-                break;
-
-            case R.id.menu_review:
-                // TODO: 리뷰
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
